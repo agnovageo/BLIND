@@ -9,19 +9,11 @@ RUN npm install --no-audit --no-fund
 COPY . .
 RUN npm run build
 
-# Stage 2: Servidor estático Nginx en modo no-root (puerto interno 8080)
-FROM nginx:1.27-alpine AS runtime
+# Stage 2: Servidor estático Nginx oficial sin privilegios root (puerto interno 8080)
+FROM nginxinc/nginx-unprivileged:1.27-alpine AS runtime
 
-# Ajustar permisos para ejecutar Nginx con el usuario no privilegiado 'nginx'
-RUN mkdir -p /var/cache/nginx /var/run/nginx /tmp/nginx && \
-    chown -R nginx:nginx /var/cache/nginx /var/run/nginx /tmp/nginx /usr/share/nginx/html && \
-    sed -i '/^user /d' /etc/nginx/nginx.conf && \
-    sed -i 's|/var/run/nginx.pid|/tmp/nginx/nginx.pid|g' /etc/nginx/nginx.conf
-
-COPY nginx.conf /etc/nginx/conf.d/default.conf
+COPY --chown=nginx:nginx nginx.conf /etc/nginx/conf.d/default.conf
 COPY --from=builder --chown=nginx:nginx /app/dist /usr/share/nginx/html
-
-USER nginx
 
 EXPOSE 8080
 
