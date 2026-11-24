@@ -42,6 +42,7 @@ export const LaunchCover: React.FC = () => {
   const [phone, setPhone] = useState('');
   const [message, setMessage] = useState('');
   const [error, setError] = useState('');
+  const [isSubmitting, setIsSubmitting] = useState(false);
   const [submittedCode, setSubmittedCode] = useState<string | null>(null);
 
   useEffect(() => {
@@ -53,7 +54,7 @@ export const LaunchCover: React.FC = () => {
     return () => window.clearInterval(intervalId);
   }, []);
 
-  const handleSubmit = (e: React.FormEvent) => {
+  const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
     setError('');
 
@@ -70,7 +71,34 @@ export const LaunchCover: React.FC = () => {
       return;
     }
 
-    setSubmittedCode(`BLD-${Math.floor(10000 + Math.random() * 90000)}`);
+    setIsSubmitting(true);
+    try {
+      const response = await fetch('/api/contact', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({
+          segment,
+          name: name.trim(),
+          email: email.trim(),
+          phone: phone.trim(),
+          message: message.trim(),
+        }),
+      });
+      const data = await response.json().catch(() => ({}));
+      if (!response.ok) {
+        setError(
+          typeof data.error === 'string'
+            ? data.error
+            : 'No se pudo enviar el mensaje. Inténtalo nuevamente.'
+        );
+        return;
+      }
+      setSubmittedCode(typeof data.code === 'string' ? data.code : 'BLD-OK');
+    } catch {
+      setError('No hubo conexión con el servidor. Inténtalo nuevamente.');
+    } finally {
+      setIsSubmitting(false);
+    }
   };
 
   const handleResetAndReturn = () => {
@@ -399,9 +427,10 @@ export const LaunchCover: React.FC = () => {
 
                 <button
                   type="submit"
-                  className="w-full rounded-lg bg-[#28A9E0] px-5 py-3 text-sm font-semibold text-slate-950 transition-colors duration-150 hover:bg-sky-300 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-sky-400 cursor-pointer"
+                  disabled={isSubmitting}
+                  className="w-full rounded-lg bg-[#28A9E0] px-5 py-3 text-sm font-semibold text-slate-950 transition-colors duration-150 hover:bg-sky-300 disabled:opacity-60 disabled:cursor-not-allowed focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-sky-400 cursor-pointer"
                 >
-                  Enviar mensaje
+                  {isSubmitting ? 'Enviando mensaje...' : 'Enviar mensaje'}
                 </button>
               </form>
             )}
