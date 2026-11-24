@@ -3,29 +3,13 @@ version: "3.7"
 services:
   blind_web:
     image: ghcr.io/agnovageo/blind:latest
-
     networks:
       - skammnet
-
     deploy:
       mode: replicated
       replicas: 1
-
-      update_config:
-        parallelism: 1
-        delay: 10s
-        order: start-first
-        failure_action: rollback
-
-      rollback_config:
-        parallelism: 1
-        delay: 10s
-
       restart_policy:
         condition: on-failure
-        delay: 5s
-        max_attempts: 3
-
       labels:
         - "traefik.enable=true"
         - "traefik.docker.network=skammnet"
