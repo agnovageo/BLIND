@@ -1,0 +1,13 @@
+node_modules
+dist
+.git
+.github
+.env
+.env.*
+!.env.example
+*.log
+.DS_Store
+docker-compose.yml
+Dockerfile
+public/assets/aistudio/SKILL_*.md
+public/assets/aistudio/image_*.png

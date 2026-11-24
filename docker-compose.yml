@@ -1,0 +1,43 @@
+version: "3.7"
+
+services:
+  blind_web:
+    # GHCR exige nombres de imagen en minúsculas aunque el repositorio sea agnovageo/BLIND
+    image: ghcr.io/agnovageo/blind:${IMAGE_TAG:-latest}
+
+    networks:
+      - skammnet
+
+    deploy:
+      mode: replicated
+      replicas: 1
+
+      update_config:
+        parallelism: 1
+        delay: 10s
+        order: start-first
+        failure_action: rollback
+
+      rollback_config:
+        parallelism: 1
+        delay: 10s
+
+      restart_policy:
+        condition: on-failure
+        delay: 5s
+        max_attempts: 3
+
+      labels:
+        - traefik.enable=true
+        - traefik.docker.network=skammnet
+        - traefik.http.routers.blind_web.rule=Host(`www.blind.pe`)
+        - traefik.http.routers.blind_web.entrypoints=websecure
+        - traefik.http.routers.blind_web.tls=true
+        - traefik.http.routers.blind_web.tls.certresolver=letsencryptresolver
+        - traefik.http.services.blind_web.loadbalancer.server.port=8080
+        - traefik.http.routers.blind_web.service=blind_web
+
+networks:
+  skammnet:
+    external: true
+    name: skammnet
