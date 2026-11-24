@@ -3,8 +3,9 @@ version: "3.7"
 services:
   blind_web:
     # GHCR exige nombres de imagen en minúsculas aunque el repositorio sea agnovageo/BLIND
-    image: ghcr.io/agnovageo/blind:${IMAGE_TAG:-latest}
-
+    image: ghcr.io/agnovageo/blind:latest
+    services:
+ 
     networks:
       - skammnet
 
