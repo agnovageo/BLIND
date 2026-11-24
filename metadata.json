@@ -1,0 +1,6 @@
+{
+  "name": "BlinD — Seguridad Perimetral",
+  "description": "Plataforma comercial e interactiva de seguridad perimetral empresarial y residencial con domótica, alerta temprana por inteligencia artificial y hardware de alta gama.",
+  "requestFramePermissions": [],
+  "majorCapabilities": ["MAJOR_CAPABILITY_SERVER_SIDE_GEMINI_API"]
+}

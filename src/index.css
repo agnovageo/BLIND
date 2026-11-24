@@ -1,0 +1,109 @@
+@import "tailwindcss";
+
+@theme {
+  --font-display: "Outfit", ui-sans-serif, system-ui, sans-serif;
+  --font-sans: "Plus Jakarta Sans", ui-sans-serif, system-ui, sans-serif;
+  --font-mono: "JetBrains Mono", ui-monospace, SFMono-Regular, monospace;
+}
+
+@layer base {
+  html,
+  body {
+    height: 100%;
+    overflow: hidden;
+    user-select: none;
+    -webkit-user-select: none;
+  }
+
+  body {
+    font-family: var(--font-sans);
+    background-color: #070b10;
+    color: #f2f6fa;
+  }
+
+  h1, h2, h3, h4 {
+    font-family: var(--font-display);
+  }
+}
+
+.carbon-surface {
+  background-color: #070b10;
+  background-image:
+    radial-gradient(ellipse 70% 50% at 50% 42%, rgba(40, 169, 224, 0.14), transparent 72%),
+    repeating-linear-gradient(
+      135deg,
+      rgba(255, 255, 255, 0.018) 0px,
+      rgba(255, 255, 255, 0.018) 1px,
+      transparent 1px,
+      transparent 5px
+    ),
+    repeating-linear-gradient(
+      45deg,
+      rgba(255, 255, 255, 0.012) 0px,
+      rgba(255, 255, 255, 0.012) 1px,
+      transparent 1px,
+      transparent 5px
+    );
+}
+
+.blueprint-grid {
+  background-color: #080d14;
+  background-image:
+    linear-gradient(to right, rgba(40, 169, 224, 0.055) 1px, transparent 1px),
+    linear-gradient(to bottom, rgba(40, 169, 224, 0.055) 1px, transparent 1px);
+  background-size: 32px 32px;
+}
+
+@keyframes blind-radar-sweep {
+  0% {
+    transform: rotate(0deg);
+  }
+  100% {
+    transform: rotate(360deg);
+  }
+}
+
+@keyframes blind-signal-pulse {
+  0%, 100% {
+    opacity: 0.35;
+  }
+  50% {
+    opacity: 1;
+  }
+}
+
+@keyframes blind-trace-flow {
+  0% {
+    stroke-dashoffset: 240;
+  }
+  100% {
+    stroke-dashoffset: 0;
+  }
+}
+
+.animate-radar-sweep {
+  animation: blind-radar-sweep 7s linear infinite;
+  transform-origin: center;
+}
+
+.animate-signal-1 {
+  animation: blind-signal-pulse 1.8s ease-in-out infinite;
+}
+
+.animate-signal-2 {
+  animation: blind-signal-pulse 1.8s ease-in-out 0.35s infinite;
+}
+
+.animate-trace {
+  stroke-dasharray: 28 212;
+  animation: blind-trace-flow 3.4s linear infinite;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .animate-radar-sweep,
+  .animate-signal-1,
+  .animate-signal-2,
+  .animate-trace {
+    animation: none !important;
+  }
+}
