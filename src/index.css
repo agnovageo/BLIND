@@ -46,23 +46,6 @@
     );
 }
 
-.blueprint-grid {
-  background-color: #080d14;
-  background-image:
-    linear-gradient(to right, rgba(40, 169, 224, 0.055) 1px, transparent 1px),
-    linear-gradient(to bottom, rgba(40, 169, 224, 0.055) 1px, transparent 1px);
-  background-size: 32px 32px;
-}
-
-@keyframes blind-radar-sweep {
-  0% {
-    transform: rotate(0deg);
-  }
-  100% {
-    transform: rotate(360deg);
-  }
-}
-
 @keyframes blind-signal-pulse {
   0%, 100% {
     opacity: 0.35;
@@ -81,11 +64,6 @@
   }
 }
 
-.animate-radar-sweep {
-  animation: blind-radar-sweep 7s linear infinite;
-  transform-origin: center;
-}
-
 .animate-signal-1 {
   animation: blind-signal-pulse 1.8s ease-in-out infinite;
 }
@@ -100,7 +78,6 @@
 }
 
 @media (prefers-reduced-motion: reduce) {
-  .animate-radar-sweep,
   .animate-signal-1,
   .animate-signal-2,
   .animate-trace {
